@@ -1,10 +1,14 @@
+import axios, { AxiosResponse } from 'axios';
+
 interface UserProps {
+    id?: number;
     name?: string;
     age?: number;
 }
 
 type Callback = () => void;
 
+const BASE_URL = 'http://localhost:3000';
 export default class User {
     private events: {
         [key: string]: Callback[];
@@ -38,5 +42,23 @@ export default class User {
         handlers.forEach((cb) => {
             cb();
         });
+    }
+
+    public fetch(): void {
+        axios
+            .get(`${BASE_URL}/users/${this.get('id')}`)
+            .then((res: AxiosResponse): void => {
+                this.set(res.data);
+            });
+    }
+
+    public save(): void {
+        const id = this.get('id');
+
+        if (id) {
+            axios.put(`${BASE_URL}/users/${id}`, this.data);
+        } else {
+            axios.post(`${BASE_URL}/users`, this.data);
+        }
     }
 }

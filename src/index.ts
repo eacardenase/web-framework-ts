@@ -1,19 +1,10 @@
 import User from './models/User';
 
 const user = new User({
-    name: 'Edwin',
-    age: 26,
+    name: 'Ana Maria Torres',
+    age: 24,
 });
 
-user.on('change', () => {
-    console.log('change 1');
-});
-user.on('change', () => {
-    console.log('change 2');
-});
-user.on('randomKey', () => {
-    console.log('random Event');
-});
+user.save();
 
-user.trigger('randomKey');
-user.trigger('change');
+console.log(user);
