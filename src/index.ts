@@ -5,9 +5,15 @@ const user = new User({
     age: 26,
 });
 
-user.set({
-    name: 'Edwin Alexander',
+user.on('change', () => {
+    console.log('change 1');
+});
+user.on('change', () => {
+    console.log('change 2');
+});
+user.on('randomKey', () => {
+    console.log('random Event');
 });
 
-console.log(user.get('name'));
-console.log(user.get('age'));
+user.trigger('randomKey');
+user.trigger('change');
