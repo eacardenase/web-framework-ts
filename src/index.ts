@@ -5,6 +5,10 @@ const user = new User({
     age: 24,
 });
 
-// user.save();
+user.events.on('save', () => {
+    console.log('User saved');
+});
+
+user.events.trigger('save');
 
 // console.log(user);

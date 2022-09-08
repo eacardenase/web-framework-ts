@@ -1,15 +1,17 @@
-import axios, { AxiosResponse } from 'axios';
 import EventHandler from './EventHandler';
+import Sync from './Sync';
 
-interface UserProps {
+export interface UserProps {
     id?: number;
     name?: string;
     age?: number;
 }
 
-const BASE_URL = 'http://localhost:3000';
+const ROOT_URL = 'http://localhost:3000/users';
+
 export default class User {
     public events: EventHandler = new EventHandler();
+    public sync: Sync<UserProps> = new Sync<UserProps>(ROOT_URL);
 
     constructor(private data: UserProps) {}
 
@@ -19,23 +21,5 @@ export default class User {
 
     public set(update: UserProps): void {
         Object.assign(this.data, update);
-    }
-
-    public fetch(): void {
-        axios
-            .get(`${BASE_URL}/users/${this.get('id')}`)
-            .then((res: AxiosResponse): void => {
-                this.set(res.data);
-            });
-    }
-
-    public save(): void {
-        const id = this.get('id');
-
-        if (id) {
-            axios.put(`${BASE_URL}/users/${id}`, this.data);
-        } else {
-            axios.post(`${BASE_URL}/users`, this.data);
-        }
     }
 }
