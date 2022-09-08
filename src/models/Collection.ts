@@ -1,14 +1,11 @@
-import axios from 'axios';
-
-import User, { UserProps } from './User';
 import EventHandler from './EventHandler';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export default class Collection {
-    public models: User[] = [];
+export default class Collection<T, K> {
+    public models: T[] = [];
     public events: EventHandler = new EventHandler();
 
-    constructor(private rootUrl: string) {}
+    constructor(private rootUrl: string, private deserialize: (json: K) => T) {}
 
     public get on() {
         return this.events.on;
@@ -20,9 +17,8 @@ export default class Collection {
 
     public fetch(): void {
         axios.get(this.rootUrl).then((response: AxiosResponse) => {
-            response.data.forEach((value: UserProps) => {
-                const user = User.buildUser(value);
-                this.models.push(user);
+            response.data.forEach((value: K) => {
+                this.models.push(this.deserialize(value));
             });
         });
 
