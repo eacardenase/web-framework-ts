@@ -1,4 +1,4 @@
-type Callback = () => void;
+export type Callback = () => void;
 
 export default class EventHandler {
     public events: {

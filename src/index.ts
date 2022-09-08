@@ -1,14 +1,13 @@
 import User from './models/User';
 
 const user = new User({
-    name: 'Ana Maria Torres',
+    id: 1,
+    name: 'Ana Maria',
     age: 24,
 });
 
-user.events.on('save', () => {
-    console.log('User saved');
+user.on('save', () => {
+    console.log(user);
 });
 
-user.events.trigger('save');
-
-// console.log(user);
+user.save();
