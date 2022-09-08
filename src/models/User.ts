@@ -2,6 +2,7 @@ import Model from './Model';
 import Attributes from './Attributes';
 import APISync from './APISync';
 import EventHandler from './EventHandler';
+import Collection from './Collection';
 
 export interface UserProps {
     id?: number;
@@ -17,6 +18,12 @@ export default class User extends Model<UserProps> {
             new Attributes<UserProps>(attrs),
             new EventHandler(),
             new APISync<UserProps>(ROOT_URL)
+        );
+    }
+
+    public static buildUserCollection(): Collection<User, UserProps> {
+        return new Collection<User, UserProps>(ROOT_URL, (json: UserProps) =>
+            User.buildUser(json)
         );
     }
 }
