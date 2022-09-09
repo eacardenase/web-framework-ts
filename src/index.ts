@@ -1,13 +1,18 @@
-import User from './models/User';
-import UserEdit from './models/views/UserEdit';
+import UserList from './models/views/UserList';
+import Collection from './models/Collection';
+import User, { UserProps } from './models/User';
 
-const user = User.buildUser({
-    name: 'Edwin Alexander',
-    age: 26,
+const usersCollection = new Collection(
+    'http://localhost:3000/users',
+    (json: UserProps) => {
+        return User.buildUser(json);
+    }
+);
+
+usersCollection.on('change', () => {
+    const root = document.getElementById('root')!;
+
+    new UserList(root, usersCollection).render();
 });
 
-const userEdit = new UserEdit(document.getElementById('root')!, user);
-
-userEdit.render();
-
-console.log(userEdit);
+usersCollection.fetch();
