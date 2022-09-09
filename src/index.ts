@@ -1,11 +1,13 @@
-import UserForm from './models/views/UserForm';
 import User from './models/User';
+import UserEdit from './models/views/UserEdit';
 
 const user = User.buildUser({
     name: 'Edwin Alexander',
     age: 26,
 });
 
-const userForm = new UserForm(document.getElementById('root')!, user);
+const userEdit = new UserEdit(document.getElementById('root')!, user);
 
-userForm.render();
+userEdit.render();
+
+console.log(userEdit);
